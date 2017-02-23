@@ -1,0 +1,56 @@
+// ejercicio5.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+
+using namespace std;
+
+void main ()
+{
+	int dia, mes, anho;
+	cout<<"Ingrese el anho: ";
+	cin>>anho;
+	cout<<"Ingresa la fecha del dia";
+	cin>>dia;
+	if ((dia>0)&&(dia<=31))
+		cout<<"Gracias por ingresar el dia";
+	else
+	{	cout<<"la fecha del dia solo puede estar entre 1-31, ingrese dia correctamente: ";
+		cin>>dia;
+	}
+
+	cout<<"Ingrese el mes";
+	cin>>mes;
+
+	if ((mes>0)&&(mes<=12))
+		cout<<"Gracias por ingresar el mes";
+	else
+	{	cout<<"elmes solo puede estar entre 1-12, ingrese mes correctamente: ";
+		cin>>mes;
+	}
+
+	if ((mes>=9)&&(mes<12))
+		if (((dia>=21)&&(mes==9))||(mes>9))
+			cout<<"QUE LINDO YA ES PRIMAVERA!!";
+		else
+			cout<<"ABRIGATE ESTAS EN INVIERNO";
+	if ((mes==12)||(mes<4))
+		if (((dia>=21)&&(mes==12))||(mes<4))
+			cout<<"YA ES VERANO!!";
+		else
+			cout<<"ABRIGATE ESTAS EN PRIMAVERA";
+	if ((mes>=4)&&(mes<6))
+		if (((dia>=21)&&(mes==4))||(mes>4))
+			cout<<"LAS HOJAS SE CAEN ES YA ES OTOÑO!!";
+		else
+			cout<<"ABRIGATE ESTAS EN VERANO";
+	if ((mes>=6)&&(mes<9))
+		if (((dia>=21)&&(mes==6))||(mes>6))
+			cout<<"ABRIGATE ESTAS EN INVIERNO!!";
+		else
+			cout<<"LAS HOJAS SE CAEN ES YA ES OTOÑO";
+	getch();
+}
+
