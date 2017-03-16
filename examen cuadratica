@@ -1,0 +1,56 @@
+// cuadratica.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+#include "math.h"
+using namespace std;
+
+float calc_disc(float a, float b, float c);
+void main()
+{
+	
+	float x1,a,b,c,z,m,disc,x2;
+	cout<<"SEGUN EL FORMATO: ax^2 + bx + c = 0"<<endl;
+	cout<<"INGRESE a : ";
+	cin>>a;
+	cout<<"INGRESE b: ";
+	cin>>b;
+	cout<<"INGRESE c: ";
+	cin>>c;
+	disc=calc_disc(a,b,c);
+	if (disc>0)
+	{
+		cout<<"TIENE SOLUCIONES REALES"<<endl;
+		x1= ((-b) + (sqrt(disc)) )/(2*a);
+		x2= ((-b) - (sqrt(disc)) )/(2*a);
+		cout<<"Solucion 1: "<<x1<<endl;
+		cout<<"Solucion 2: "<<x2<<endl;
+	}
+	else
+	{
+		if(disc==0)
+		{
+			cout<<"TIENE UNA UNICA SOLUCION"<<endl;
+			x1= ((-b) + sqrt(disc) )/(2*a);
+			cout<<"Solucion 1: "<<x1<<endl;
+		}
+		else
+		{
+			cout<<"TIENE SOLUCION IMAGINARIA";
+			z= (-b)/(2*a);
+			m= sqrt(disc*(-1))/(2*a);
+			cout<<"Solucion 1: "<<z<<" + "<<m<<" i "<<endl;
+			cout<<"Solucion 1: "<<z<<" - "<<m<<" i "<<endl;
+		}
+	}
+	getch();
+}
+
+float calc_disc(float a, float b, float c)
+{
+	float d;
+	d=  (b*b)-(4*a*c);
+	return (d);
+}
