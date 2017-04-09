@@ -1,0 +1,61 @@
+// LAB.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+#include "math.h"
+#include <string>
+#define MAX 20
+using namespace std;
+void nombre_notas(string nombre[],int notas[],int n);
+void ordenar(string nombre[],int notas[],int n);
+void main()
+{
+	int n, notas[MAX];
+	string nombre[MAX];
+	cout<<"cuantos alumnos hay en la clase?"<<endl;
+	cin>>n;
+	nombre_notas(nombre,notas,n);
+	ordenar(nombre,notas,n);
+
+		
+		for(int i=0;i<n;i++)
+		{
+			cout<<nombre[i]<<"\t";
+			cout<<notas[i]<<endl;
+		}
+	getch();
+
+
+}
+
+void nombre_notas(string nombre[],int notas[],int n)
+{
+	for(int i=0;i<n;i++)
+			{
+				cout<<"INGRESE NOMBRE"<<endl;
+				cin.ignore();
+				getline(cin,nombre[i]);
+				cout<<"INGRESE NOTAS"<<endl;
+				cin>>notas[i];
+			}
+}
+void ordenar(string nombre[],int notas[],int n)
+{	int im,aux;
+	string aux1;
+	
+	for(int i=0;i<n-1;i++)
+		for(int j=i+1;j<n;j++)
+		if(notas[j]>notas[i])
+		{
+			aux=notas[i];
+			notas[i]=notas[j];
+			notas[j]=aux;
+
+			aux1=nombre[i];
+			nombre[i]=nombre[j];
+			nombre[j]=aux1;
+		}
+	
+}
