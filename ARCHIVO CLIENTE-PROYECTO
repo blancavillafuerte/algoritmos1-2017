@@ -1,0 +1,302 @@
+// BLANCA VILLAFUERTE.cpp : Defines the entry point for the console application.
+//
+
+#include "stdafx.h"
+#include <iostream>
+#include "conio.h"
+#include <string>
+#include "stdlib.h"
+
+using namespace std;
+void ALTA_SECUENCIAL(void);
+void LISTADO_SECUENCIAL(void);
+void MODIFICACION_SECUENCIAL(void);
+void CONSULTA_SECUENCIAL(void);
+void BAJA_FISICA_SECUENCIAL(void);
+void BAJA_LOGICA_SECUENCIAL(void);
+
+struct tipo_registro{
+	int no_carnet;
+	string nombre;
+	int edad;
+	char propietario;
+};
+
+tipo_registro Registro;
+FILE *alias;
+
+void main()
+{
+	int op;
+	do{
+	cout<<"         MENU"<<endl;
+	cout<<"(0) SALIR"<<endl;
+	cout<<"(1) adicion"<<endl;
+	cout<<"(2) listado"<<endl;
+	cout<<"(3) modificado"<<endl;
+	cout<<"(4) consulta"<<endl;
+	cout<<"(5) borrado"<<endl;
+	cout<<endl;
+	cout<<"ingrese una opcion"<<endl;
+	cin>>op;
+	switch(op)
+	{
+	case 1:
+		{
+		ALTA_SECUENCIAL();
+		break;
+		}
+	case 2:
+		{
+		LISTADO_SECUENCIAL();
+		break;
+		}
+
+	case 3:
+		{
+		MODIFICACION_SECUENCIAL();
+		break;
+		}
+	case 4:
+		{
+		CONSULTA_SECUENCIAL();
+		break;
+		}
+	case 5:
+		{
+		BAJA_LOGICA_SECUENCIAL();
+		break;
+		}
+	case 0:
+		{
+		cout<<"salir"<<endl;
+		break;
+		}
+	default:
+		{
+		cout<<"error"<<endl;
+		break;
+		}
+	}
+	}while(op!=0);
+	getch();
+
+}
+void ALTA_SECUENCIAL(void) 
+{ 
+	
+  int no_carnet;  // Variable local para el numero de producto 
+ 
+  cout << "\n\rALTAS DE REGISTROS DE USUARIOS"; 
+  alias=fopen("PRODUCTO.SEC","rb+"); // Intenta abrir el archivo  
+                                     // en modo de lectura/escritura 
+  if(alias==NULL) 
+    alias=fopen("PRODUCTO.SEC","wb"); // Crea el archivo en caso de no 
+                                      // existir 
+  cout << "\n\n\n\rNumero de carnet: "; cin >> no_carnet; 
+  fread(&Registro,sizeof(Registro),1,alias); 
+  // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias" 
+  while(!feof(alias)) // Ciclo mientras no se encuentre el final del 
+                      // archivo 
+  { 
+    if(Registro.no_carnet==no_carnet) 
+    { 
+       cout << "\n\n\n\rUsuario ya existente !!!"; 
+       fclose(alias); 
+       getch(); 
+       return; 
+    } 
+    fread(&Registro,sizeof(Registro),1,alias); 
+  } 
+  cin.ignore();
+  cout << "\n\rNombre: "; getline(cin,Registro.nombre); 
+  cout << "\n\rEdad   : "; cin >> Registro.edad; 
+  do 
+  { 
+    cout << "\n\rEs propietario?   : "; Registro.propietario=toupper(getche()); 
+  }while(Registro.propietario!='S' && Registro.propietario!='N'); 
+  Registro.no_carnet=no_carnet; 
+  fwrite(&Registro,sizeof(Registro),1,alias); // Grabar el Registro  
+  fclose(alias); // Cierra el archivo 
+  cout << "\n\n\n\rCliente registrado !!!"; 
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+  getch(); 
+  return; 
+} 
+
+void LISTADO_SECUENCIAL(void) 
+{ 
+  cout << "\n\rLISTADO DE REGISTROS DE USUARIOS"; 
+  alias=fopen("PRODUCTO.SEC","rb"); // Intenta abrir el archivo PRODUCTO.SEC
+                             // en modo de solo lectura 
+  if(alias==NULL) 
+  { 
+    cout << "\n\n\n\rNo existe ese usario !!!"; 
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+    getch(); 
+    return; 
+  } 
+  cout<< "\n\rNo Carnet       Nombre      Edad          Propietario"<<endl; 
+  cout << "\n\r--------------------------------------------------------------------"<<endl; 
+  fread(&Registro,sizeof(Registro),1,alias); 
+     // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  while(!feof(alias)) // Ciclo mientras no se encuentre el final del archivo 
+  { 
+cout<<Registro.no_carnet<<"\t""\t"<<Registro.nombre<<"\t""\t"<<Registro.edad<<"\t""\t"<<Registro.propietario<<endl; 
+    fread(&Registro,sizeof(Registro),1,alias); 
+  } 
+  fclose(alias); // Cierra el archivo 
+ cout << "\n\r---------------------------------------------------------"; 
+  cout << "\n\rFin del listado !!!"; 
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+  getch(); 
+  return; 
+}
+
+void MODIFICACION_SECUENCIAL(void) 
+{ 
+  int no_carnet; // Variable local para el numero de producto que desea modificar 
+  cout << "\n\rMODIFICACION DE REGISTROS DE USUARIOS"; 
+  alias=fopen("PRODUCTO.SEC","rb+"); // Intenta abrir el archivo PRODUCTO.SEC 
+                             // en modo de lectura/escritura 
+  if(alias==NULL)  // Valida la existencia del archivo 
+  { 
+    cout << "\n\n\n\rNo existe el archivo !!!"; 
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+    getch(); 
+    return; 
+  } 
+  cout << "\n\n\n\rNumero de usuario: "; cin >> no_carnet; 
+  fread(&Registro,sizeof(Registro),1,alias); 
+     // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  while(!feof(alias)) // Ciclo mientras no se encuentre el final del archivo 
+  { 
+    if(Registro.no_carnet==no_carnet) 
+    { cin.ignore();
+      cout<< "\n\rNo Carnet       Nombre      Edad       Propietario"<<endl; 
+      cout << "\n\r--------------------------------------------------------------------"<<endl; 
+	  cout<<Registro.no_carnet<<"\t""\t"<<Registro.nombre<<"\t""\t"<<Registro.edad<<"\t""\t"<<Registro.propietario<<endl; 
+	  cout << "\n\n\n\rAnote los nuevos datos ..."; 
+      cout << "\n\rNombre: "; getline(cin,Registro.nombre); 
+      cout << "\n\rEdad   : "; cin >> Registro.edad; 
+      do 
+      { 
+      cout << "\n\rPropietario   : "; Registro.propietario=toupper(getche()); 
+      }while(Registro.propietario!='S' && Registro.propietario!='N'); 
+      // Es necesario reposicionar el apuntador del archivo al principio del 
+      // registro que desea modificar, ya que al leer un registro, el 
+      // apuntador se posiciona en el registro siguiente 
+      // La funcion ftell(alias) devuelve la posicion donde se encuentra el 
+      // apuntador 
+      fseek(alias,ftell(alias)-sizeof(Registro),SEEK_SET); 
+      fwrite(&Registro,sizeof(Registro),1,alias);  // Graba el registro con 
+                                       // los nuevos campos 
+      fclose(alias);   // Cierra el archivo 
+      cout << "\n\n\n\rRegistro modificado !!!"; 
+      cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+      getch(); 
+      return; 
+    } 
+    fread(&Registro,sizeof(Registro),1,alias); 
+  } 
+  cout << "\n\rNo se encuentra ese registro !!!"; 
+  fclose(alias); // Cierra el archivo 
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+  getch(); 
+  return; 
+} 
+
+void CONSULTA_SECUENCIAL(void) 
+{ 
+  int no_carnet; 
+  cout << "\n\rCONSULTA DE REGISTROS DE USUARIOS"; 
+  alias=fopen("PRODUCTO.SEC","rb"); // Intenta abrir el archivo PRODUCTO.SEC 
+                             // en modo de solo lectura 
+  if(alias==NULL) 
+  { 
+    cout << "\n\n\n\rNo existe el archivo !!!"; 
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+    getch(); 
+    return; 
+  } 
+  cout << "\n\n\n\rNumero de carnet: "; cin >> no_carnet; 
+  fread(&Registro,sizeof(Registro),1,alias); 
+    // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias" 
+  while(!feof(alias))  
+  { 
+    if(Registro.no_carnet==no_carnet) 
+    { 
+      cout<< "\n\rNo Carnet       Nombre      Edad       Propietario"<<endl; 
+      cout << "\n\r--------------------------------------------------------------------"<<endl;
+	  cout<<Registro.no_carnet<<"\t""\t"<<Registro.nombre<<"\t""\t"<<Registro.edad<<"\t""\t"<<Registro.propietario<<endl; 
+      fclose(alias); 
+      cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+      getch(); 
+      return; 
+    } 
+    fread(&Registro,sizeof(Registro),1,alias); 
+  } 
+  cout << "\n\rNo se encuentra ese registro !!!"; 
+  fclose(alias); // Cierra el archivo 
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+  getch(); 
+  return; 
+} 
+
+void BAJA_LOGICA_SECUENCIAL(void) 
+{ 
+  int no_carnet; // Variable local para el numero de producto que desea eliminar 
+  char op; //Variable local 
+  cout << "\n\rBAJAS LOGICAS DE REGISTROS DE USUARIOS"; 
+  alias=fopen("PRODUCTO.SEC","rb+"); // Intenta abrir el archivo PRODUCTO.SEC 
+                             // en modo de lectura/escritura 
+  if(alias==NULL)  // Valida la existencia del archivo 
+  { 
+    cout << "\n\n\n\rNo existe el archivo !!!"; 
+    cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+    getch(); 
+    return; 
+  } 
+  cout << "\n\n\n\rNumero de carnet: "; 
+  cin >> no_carnet; 
+  fread(&Registro,sizeof(Registro),1,alias); 
+     // Lee el "Registro", de tamano=sizeof(Registro) del archivo "alias"
+  while(!feof(alias)) // Ciclo mientras no se encuentre el final del archivo 
+  { 
+    if(Registro.no_carnet==no_carnet) 
+    { 
+      cout<< "\n\rNo Carnet       Nombre     Edad       Propietario"<<endl; 
+      cout << "\n\r--------------------------------------------------------------------"<<endl;
+	  cout<<Registro.no_carnet<<"\t""\t"<<Registro.nombre<<"\t""\t"<<Registro.edad<<"\t""\t"<<Registro.propietario<<endl; 
+      Registro.no_carnet=0; 
+      Registro.nombre=""; 
+      Registro.edad=0; 
+      Registro.propietario=' '; 
+      do { 
+        cout << "\n\n\rEsta seguro que desea borrarlo? [S/N] ---> "; 
+        op=toupper(getche()); 
+      }while(op!='S' && op!='N'); 
+      if(op=='S')       { 
+       // Es necesario reposicionar el apuntador del archivo al principio del 
+       // registro que desea modificar, ya que al leer un registro, el 
+       // apuntador se posiciona en el registro siguiente 
+       // La funcion ftell(alias) devuelve la posicion donde se encuentra el 
+       // apuntador 
+            fseek(alias,ftell(alias)-sizeof(Registro),SEEK_SET);      
+       fwrite(&Registro,sizeof(Registro),1,alias);  // Graba el registro con 
+                                       // los nuevos campos 
+       cout << "\n\n\n\rRegistro eliminado !!!"; 
+      } 
+      fclose(alias);   // Cierra el archivo 
+      cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+      getch(); 
+      return; 
+    } 
+    fread(&Registro,sizeof(Registro),1,alias); 
+  } 
+  cout << "\n\rNo se encuentra ese registro !!!"; 
+  fclose(alias); // Cierra el archivo 
+  cout << "\n\r<<< Oprima cualquier tecla para continuar >>>"; 
+  getch(); 
+  return; 
+}
